@@ -1,7 +1,7 @@
 ---
 title: 独立部署
 icon: server
-redirectFrom: /guide/server/vps-deploy.html
+order: -1
 ---
 
 如果你担忧免费平台的请求延时，你也可以选择部署在自己的服务器上。
@@ -14,12 +14,12 @@ redirectFrom: /guide/server/vps-deploy.html
 docker run -d \
   -e LEAN_ID=xxx \
   -e LEAN_KEY=xxx \
-  -e LEAN_SERVER=https://xxx.com \
+  -e LEAN_MASTER_KEY=xxx \
   -p 8360:8360 \
   lizheming/waline
 ```
 
-`LEAN_ID` 和 `LEAN_KEY` 分别对应的是后台得到的 App Id 和 App Key。如果非 LeanCloud 国际版用户的话需要在后台绑定已备案域名并配置 `LEAN_SERVER`。
+`LEAN_ID`、`LEAN_KEY` 和 `LEAN_MASTER_KEY` 分别对应的是后台 `APP ID`, `APP KEY`, `Master Key`。如果非 LeanCloud 国际版用户的话需要在后台绑定已备案域名并配置 `LEAN_SERVER`。
 
 ::: tip 如何构建镜像？
 
@@ -47,7 +47,7 @@ services:
     image: lizheming/waline:latest
     restart: always
     ports:
-      - 127.0.0.1:8360:8360
+      - 8360:8360
     volumes:
       - ${PWD}/data:/app/data
     environment:

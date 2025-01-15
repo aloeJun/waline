@@ -1,15 +1,15 @@
-import {
-  type WalineCommentSorting,
-  type WalineHighlighter,
-  type WalineEmojiInfo,
-  type WalineEmojiPresets,
-  type WalineImageUploader,
-  type WalineLoginStatus,
-  type WalineMeta,
-  type WalineTexRenderer,
-  type WalineSearchOptions,
+import type {
+  WalineCommentSorting,
+  WalineEmojiInfo,
+  WalineEmojiPresets,
+  WalineHighlighter,
+  WalineImageUploader,
+  WalineLoginStatus,
+  WalineMeta,
+  WalineSearchOptions,
+  WalineTeXRenderer,
 } from './base.js';
-import { type WalineLocale } from './locale.js';
+import type { WalineLocale } from './locale.js';
 
 export interface WalineProps {
   /**
@@ -95,6 +95,8 @@ export interface WalineProps {
    * - `'ru'`
    * - `'ru-ru'`
    * - `'ru-RU'`
+   * - `'fr-FR'`
+   * - `'fr'`
    *
    * Display language for waline
    *
@@ -116,6 +118,8 @@ export interface WalineProps {
    * - `'ru'`
    * - `'ru-ru'`
    * - `'ru-RU'`
+   * - `'fr-FR'`
+   * - `'fr'`
    *
    * @default navigator.language
    */
@@ -159,26 +163,26 @@ export interface WalineProps {
    *
    * @default ['//unpkg.com/@waline/emojis@1.1.0/weibo']
    */
-  emoji?: (WalineEmojiInfo | WalineEmojiPresets)[] | boolean;
+  emoji?: (WalineEmojiInfo | WalineEmojiPresets)[] | 'built-in' | 'disabled';
 
   /**
    * 设置搜索功能
    *
    * Customize Search feature
    *
-   * @default true
+   * @default 'built-in'
    */
-  search?: WalineSearchOptions | boolean;
+  search?: WalineSearchOptions | 'built-in' | 'disabled';
 
   /**
    * 代码高亮
    *
    * Code highlighting
    *
-   * @default true
+   * @default 'built-in'
    */
 
-  highlighter?: WalineHighlighter | boolean;
+  highlighter?: WalineHighlighter | 'built-in' | 'disabled';
 
   /**
    * 自定义图片上传方法，方便更好的存储图片
@@ -189,19 +193,19 @@ export interface WalineProps {
    *
    * We will pass a picture file object when execute it.
    *
-   * @default true
+   * @default 'built-in'
    */
 
-  imageUploader?: WalineImageUploader | boolean;
+  imageUploader?: WalineImageUploader | 'built-in' | 'disabled';
 
   /**
    * 自定义数学公式处理方法，用于预览。
    *
    * Custom math formula parse callback for preview.
    *
-   * @default true
+   * @default 'built-in'
    */
-  texRenderer?: WalineTexRenderer | boolean;
+  texRenderer?: WalineTeXRenderer | 'built-in' | 'disabled';
 
   /**
    *
@@ -222,17 +226,17 @@ export interface WalineProps {
   login?: WalineLoginStatus;
 
   /**
-   * 是否在页脚展示版权信息
+   * 是否在页脚隐藏版权信息
    *
    * 为了支持 Waline，我们强烈建议你开启它
    *
-   * Whether show copyright in footer
+   * Whether hide copyright in footer
    *
    * We strongly recommended you to keep it on to support waline
    *
-   * @default true
+   * @default false
    */
-  copyright?: boolean;
+  noCopyright?: boolean;
 
   /**
    * recaptcha v3 client key
@@ -240,7 +244,12 @@ export interface WalineProps {
   recaptchaV3Key?: string;
 
   /**
+   * turnstile client key
+   */
+  turnstileKey?: string;
+
+  /**
    * reaction
    */
-  reaction?: string[] | boolean;
+  reaction?: string[] | 'built-in' | 'disabled';
 }

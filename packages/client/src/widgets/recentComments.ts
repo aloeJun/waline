@@ -1,6 +1,7 @@
-import { getRecentComment } from '../api/index.js';
+import type { RecentCommentData } from '@waline/api';
+import { getRecentComment } from '@waline/api';
+
 import { useUserInfo } from '../composables/index.js';
-import { type WalineComment } from '../typings/index.js';
 import { getRoot } from '../utils/index.js';
 
 export interface WalineRecentCommentsOptions {
@@ -41,7 +42,7 @@ export interface WalineRecentCommentsResult {
    *
    * Comment Data
    */
-  comments: WalineComment[];
+  comments: RecentCommentData[];
 
   /**
    * 取消挂载挂件
@@ -66,13 +67,13 @@ export const RecentComments = ({
     count,
     lang,
     signal: controller.signal,
-    token: userInfo.value?.token,
+    token: userInfo.value.token,
   }).then((comments) => {
     if (root && comments.length) {
       root.innerHTML = `<ul class="wl-recent-list">${comments
         .map(
           (comment) =>
-            `<li class="wl-recent-item"><a href="${comment.url}">${comment.nick}</a>：${comment.comment}</li>`
+            `<li class="wl-recent-item"><a href="${comment.url}">${comment.nick}</a>：${comment.comment}</li>`,
         )
         .join('')}</ul>`;
 

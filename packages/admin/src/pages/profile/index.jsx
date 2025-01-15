@@ -1,12 +1,12 @@
 import cls from 'classnames';
 import React, { useState } from 'react';
-import { useTranslation, Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import TwoFactorAuth from './twoFactorAuth';
-import Header from '../../components/Header';
-import * as Icons from '../../components/icon';
-import { updateProfile } from '../../services/user';
+import TwoFactorAuth from './twoFactorAuth.jsx';
+import Header from '../../components/Header.jsx';
+import * as Icons from '../../components/icon/index.js';
+import { updateProfile } from '../../services/user.js';
 
 export default function () {
   const [isPasswordUpdating, setPasswordUpdating] = useState(false);
@@ -27,8 +27,13 @@ export default function () {
     }
 
     setProfileUpdating(true);
-    await dispatch.user.updateProfile({ display_name, url, label });
-    setProfileUpdating(false);
+    try {
+      await dispatch.user.updateProfile({ display_name, url, label });
+    } catch (e) {
+      alert(e);
+    } finally {
+      setProfileUpdating(false);
+    }
   };
 
   const onPasswordUpdate = async function (e) {
@@ -230,7 +235,10 @@ export default function () {
                             target={user[social] ? '_blank' : '_self'}
                             rel="noreferrer"
                           >
-                            {React.createElement(Icons[social])}
+                            {
+                              /* eslint-disable-next-line import-x/namespace */
+                              React.createElement(Icons[social])
+                            }
                           </a>
                           <div
                             className="account-unbind"
@@ -247,7 +255,7 @@ export default function () {
                             </svg>
                           </div>
                         </div>
-                      )
+                      ),
                     )}
                 </div>
               </section>

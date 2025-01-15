@@ -1,5 +1,7 @@
-import { getPageview, updatePageview } from './api/index.js';
-import { type WalineAbort } from './typings/index.js';
+import type { GetArticleCounterResponse } from '@waline/api';
+import { getPageview, updatePageview } from '@waline/api';
+
+import type { WalineAbort } from './typings/index.js';
 import { errorHandler, getQuery, getServerURL } from './utils/index.js';
 
 export interface WalinePageviewCountOptions {
@@ -48,11 +50,17 @@ export interface WalinePageviewCountOptions {
 }
 
 const renderVisitorCount = (
-  counts: number[],
-  countElements: HTMLElement[]
+  counts: GetArticleCounterResponse,
+  countElements: HTMLElement[],
 ): void => {
   countElements.forEach((element, index) => {
-    element.innerText = counts[index].toString();
+    const count = counts[index].time;
+
+    if (typeof count !== 'number') {
+      return;
+    }
+
+    element.innerText = count.toString();
   });
 };
 
@@ -67,7 +75,7 @@ export const pageviewCount = ({
 
   const elements = Array.from(
     // pageview selectors
-    document.querySelectorAll<HTMLElement>(selector)
+    document.querySelectorAll<HTMLElement>(selector),
   );
 
   const filter = (element: HTMLElement): boolean => {
@@ -79,7 +87,7 @@ export const pageviewCount = ({
   const fetch = (elements: HTMLElement[]): Promise<void> =>
     getPageview({
       serverURL: getServerURL(serverURL),
-      paths: elements.map((element) => getQuery(element) || path),
+      paths: elements.map((element) => getQuery(element) ?? path),
       lang,
       signal: controller.signal,
     })
@@ -95,12 +103,7 @@ export const pageviewCount = ({
       serverURL: getServerURL(serverURL),
       path,
       lang,
-    }).then((count) =>
-      renderVisitorCount(
-        new Array<number>(normalElements.length).fill(count),
-        normalElements
-      )
-    );
+    }).then((counts) => renderVisitorCount(counts, normalElements));
 
     // if we should fetch count of other pages
     if (elementsNeedstoBeFetched.length) {

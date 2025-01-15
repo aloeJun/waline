@@ -1,7 +1,6 @@
 ---
 title: 客户端 API
 icon: config
-redirectFrom: /reference/client.html
 ---
 
 ## 客户端 API
@@ -64,7 +63,7 @@ interface WalineInstance {
 - 类型: `string | HTMLElement | null`
 - 默认值: `'#waline'`
 
-Waline 的初始化挂载器。必须是一个有效的 **CSS 选择器** 或 HTMLELement 对象。
+Waline 的初始化挂载器。必须是一个有效的 **CSS 选择器** 或 HTMLElement 对象。
 
 如果你只需要下方的统计，请将此选项设置为 `null`。
 
@@ -181,7 +180,7 @@ type WalineAbort = (reason?: any) => void;
 
 ```ts
 const RecentComments: (
-  options: WalineRecentCommentsOptions
+  options: WalineRecentCommentsOptions,
 ) => Promise<WalineRecentCommentsResult>;
 ```
 
@@ -230,7 +229,7 @@ interface WalineRecentCommentsResult {
 
 ```ts
 const UserList: (
-  options: WalineUserListOptions
+  options: WalineUserListOptions,
 ) => Promise<WalineUserListResult>;
 ```
 

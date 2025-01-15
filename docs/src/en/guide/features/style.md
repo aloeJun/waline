@@ -1,6 +1,7 @@
 ---
 title: Style Customize
 icon: style
+order: -2
 ---
 
 `@waline/client` provides some CSS variables. You can easily configure the style of waline through these variables:
@@ -40,14 +41,14 @@ For CDN users, you can import via the following link:
 <!-- Meta icon (optional) -->
 <link
   rel="stylesheet"
-  href="https://unpkg.com/@waline/client@v2/dist/waline-meta.css"
+  href="https://unpkg.com/@waline/client@v3/dist/waline-meta.css"
 />
 ```
 
 For NPM users, you can import via:
 
 ```js
-import '@waline/client/dist/waline-meta.css';
+import '@waline/client/meta';
 ```
 
 ## RTL support

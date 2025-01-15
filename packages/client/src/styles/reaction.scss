@@ -62,8 +62,8 @@
 
 .wl-reaction-loading {
   position: absolute;
-  top: -4px;
   inset-inline-end: -5px;
+  top: -4px;
 
   width: 18px;
   height: 18px;
@@ -73,15 +73,15 @@
 
 .wl-reaction-votes {
   position: absolute;
-  top: -9px;
   inset-inline-end: -9px;
+  top: -9px;
 
   min-width: 1em;
   padding: 2px;
   border: 1px solid var(--waline-theme-color);
   border-radius: 1em;
 
-  background: var(--waline-bgcolor);
+  background: var(--waline-bg-color);
   color: var(--waline-theme-color);
 
   font-weight: 700;
@@ -90,7 +90,7 @@
 
   .wl-reaction-item.active & {
     background: var(--waline-theme-color);
-    color: var(--waline-bgcolor);
+    color: var(--waline-bg-color);
   }
 }
 

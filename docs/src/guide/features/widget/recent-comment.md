@@ -1,7 +1,6 @@
 ---
 title: 最新评论挂件
 icon: recent
-redirectFrom: /guide/client/widget/recent-comment.html
 ---
 
 Waline 通过 `RecentComments` 支持最新评论挂件显示，方便在博客侧边栏显示最近评论。
@@ -58,7 +57,7 @@ Waline 通过 `RecentComments` 支持最新评论挂件显示，方便在博客�
     count: 10,
   }).then(({ comments }) => {
     document.getElementById('waline-recent').innerHTML = comments.map(
-      (comment) => `${comment.nick}: ${comment.comment}`
+      (comment) => `${comment.nick}: ${comment.comment}`,
     );
   });
 </script>

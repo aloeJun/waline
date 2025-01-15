@@ -28,10 +28,10 @@ waline:
   serverURL: https://waline.vercel.app
 
   # Waline library CDN url, you can set this to your preferred CDN
-  # libUrl: https://unpkg.com/@waline/client@v2/dist/waline.js
+  # libUrl: https://unpkg.com/@waline/client@v3/dist/waline.umd.js
 
   # Waline CSS styles CDN url, you can set this to your preferred CDN
-  cssUrl: https://unpkg.com/@waline/client@v2/dist/waline.css
+  cssUrl: https://unpkg.com/@waline/client@v3/dist/waline.css
 
   # Custom locales
   # locale:
@@ -62,7 +62,7 @@ waline:
   # requiredMeta:
   #   - nick
 
-  # Language, available values: en-US, zh-CN, zh-TW, pt-BR, ru-RU, jp-JP
+  # Language, available values: en-US, zh-CN, zh-TW, pt-BR, ru-RU, jp-JP, fr-FR, es-MX
   # lang: zh-CN
 
   # Word limit, no limit when setting to 0

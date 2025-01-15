@@ -1,7 +1,7 @@
 ---
 title: Comment Counter
 icon: counter
-redirectFrom: /en/guide/client/comment.html
+order: 8
 ---
 
 Waline supports displaying the number of comments separately in the non-comment area.
@@ -14,7 +14,7 @@ You can enable comment counting in the `init` function by setting the `comment` 
 
 ```html
 <script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
 
   init({
     el: '#waline',
@@ -40,13 +40,12 @@ Every time you call `WalineInstance.update()`, Waline will search the page conte
 ::: tip Examples
 
 ```html
-The current page has
-<span class="waline-comment-count" data-path="/en/cookbook/comment" />
-comments.
+The current page has <span class="waline-comment-count" /> comments, the home
+page has <span data-path="/en/" class="waline-comment-count" /> comments.
 ```
 
-The current page has
-<span data-path="/en/cookbook/comment" class="waline-comment-count" /> comments.
+The current page has <span class="waline-comment-count" /> comments, the home
+page has <span data-path="/en/" class="waline-comment-count" /> comments.
 
 :::
 
@@ -56,7 +55,7 @@ Besides automatically update via the `init` function, you can manually update th
 
 ```html
 <script type="module">
-  import { commentCount } from 'https://unpkg.com/@waline/client@v2/dist/comment.mjs';
+  import { commentCount } from 'https://unpkg.com/@waline/client@v3/dist/comment.js';
 
   commentCount({
     serverURL,
@@ -92,7 +91,7 @@ Sometimes, you may want to display the comment count of some pages in the articl
 
 ```html
 <script type="module">
-  import { commentCount } from 'https://unpkg.com/@waline/client@v2/dist/comment.mjs';
+  import { commentCount } from 'https://unpkg.com/@waline/client@v3/dist/comment.js';
 
   commentCount({
     serverURL,
@@ -103,3 +102,20 @@ Sometimes, you may want to display the comment count of some pages in the articl
   });
 </script>
 ```
+
+<script setup>
+import { walineOptions } from '@source/.vuepress/client.ts'
+import { commentCount } from '@waline/client/comment'
+import { onMounted } from 'vue'
+import { useRoute } from 'vuepress/client'
+
+const { serverURL } = walineOptions
+const route = useRoute()
+
+onMounted(()=>{
+  commentCount({
+    serverURL: serverURL,
+    path: route.path,
+  })
+})
+</script>

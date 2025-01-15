@@ -1,5 +1,5 @@
-const os = require('os');
-const path = require('path');
+const os = require('node:os');
+const path = require('node:path');
 
 const Application = require('thinkjs');
 const Loader = require('thinkjs/lib/loader');
@@ -22,7 +22,8 @@ module.exports = function (configParams = {}) {
 
   return function (req, res) {
     for (const k in config) {
-      think.config(k, config[k]);
+      // fix https://github.com/walinejs/waline/issues/2649 with alias model config name
+      think.config(k === 'model' ? 'customModel' : k, config[k]);
     }
 
     return think

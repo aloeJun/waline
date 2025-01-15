@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 
-import Header from '../../components/Header';
-import * as Icons from '../../components/icon';
-import { useRecaptcha } from '../../components/useRecaptchaV3';
-import { get2FAToken } from '../../services/user';
+import Header from '../../components/Header.jsx';
+import * as Icons from '../../components/icon/index.js';
+import { useCaptcha } from '../../components/useCaptcha.js';
+import { get2FAToken } from '../../services/user.js';
 
 export default function () {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [is2FAEnabled, enable2FA] = useState(false);
-  const execute = window.recaptchaV3Key
-    ? useRecaptcha({ sitekey: window.recaptchaV3Key, hideDefaultBadge: true })
-    : () => '';
+  const execute = useCaptcha({
+    sitekey: window.turnstileKey || window.recaptchaV3Key,
+    hideDefaultBadge: true,
+  });
 
   const match = location.pathname.match(/(.*?\/)ui/);
   const basePath = match && match[1] ? match[1] : '/';
@@ -43,6 +45,7 @@ export default function () {
   const onSubmit = async function (e) {
     e.preventDefault();
     setError(false);
+    setLoading(true);
 
     const email = e.target.email.value;
     const password = e.target.password.value;
@@ -59,7 +62,7 @@ export default function () {
       return setError(t('please input 2fa code'));
     }
 
-    const recaptchaV3 = await execute('login');
+    const token = await execute('login');
 
     try {
       await dispatch.user.login({
@@ -67,10 +70,13 @@ export default function () {
         password,
         code,
         remember,
-        recaptchaV3,
+        recaptchaV3: window.recaptchaV3Key ? token : undefined,
+        turnstile: window.turnstileKey ? token : undefined,
       });
-    } catch (e) {
+    } catch {
       setError(t('email or password error'));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -153,8 +159,13 @@ export default function () {
                 />
               </p>
             )}
+            <p className="captcha-container" />
             <p className="submit">
-              <button type="submit" className="btn btn-l w-100 primary">
+              <button
+                type="submit"
+                className="btn btn-l w-100 primary"
+                disabled={loading}
+              >
                 {t('login')}
               </button>
             </p>
@@ -181,7 +192,10 @@ export default function () {
                   window.ALLOW_SOCIALS ? '/' + social + '?' : `?type=${social}`
                 }&redirect=${basePath}ui/profile`}
               >
-                {React.createElement(Icons[social])}
+                {
+                  /* eslint-disable-next-line import-x/namespace */
+                  React.createElement(Icons[social])
+                }
               </a>
             ))}
           </div>

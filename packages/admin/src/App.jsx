@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Provider, useSelector } from 'react-redux';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router';
 
-import Forgot from './pages/forgot';
-import Login from './pages/login';
-import ManageComments from './pages/manage-comments';
-import Migration from './pages/migration';
-import Profile from './pages/profile';
-import Register from './pages/register';
-import User from './pages/user';
-import { store } from './store';
+import Forgot from './pages/forgot/index.jsx';
+import Login from './pages/login/index.jsx';
+import ManageComments from './pages/manage-comments/index.jsx';
+import Migration from './pages/migration/index.jsx';
+import Profile from './pages/profile/index.jsx';
+import Register from './pages/register/index.jsx';
+import User from './pages/user/index.jsx';
+import { store } from './store/index.js';
 
 function Access(props) {
   const user = useSelector((state) => state.user);
@@ -17,7 +17,7 @@ function Access(props) {
   useEffect(() => {
     const meta = props.meta || {};
     const basename = props.basename || '';
-    const emptyUser = !user || !user.email;
+    const emptyUser = !user?.email;
 
     if (emptyUser) {
       return (location.href =

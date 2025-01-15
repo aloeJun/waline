@@ -1,6 +1,7 @@
 ---
 title: 生态系统
 icon: ecosystem
+order: 3
 ---
 
 Waline 是经典的前后端分离 Client/Server 架构，提供了较为完善的 API 接口。你可以基于服务端提供的 API 自行实现自己的客户端实现。
@@ -49,6 +50,10 @@ Waline 是经典的前后端分离 Client/Server 架构，提供了较为完善�
 - [vuepress-plugin-comment2](https://vuepress-theme-hope.github.io/v2/comment/): Comment system for VuePress2.
 - [@mr-hope/vuepress-plugin-comment](https://vuepress-theme-hope.github.io/v1/comment/): Comment system for VuePress1.
 
+### Gatsby
+
+- [gatsby-plugin-waline](https://www.npmjs.com/package/gatsby-plugin-waline): Comment system plugin for Gatsby.
+
 Others:
 
 - [vuepress-plugin-comment-plus](https://github.com/SivanLaai/vuepress-plugin-comment-plus): Comment system plugin for VuePress.
@@ -69,6 +74,7 @@ Others:
 - 🦄 [Unicorn](https://github.com/Uzizkp/hexo-theme-unicorn)
 - 💀 [freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack)
 - 🤡 [Redefine](https://github.com/EvanNotFound/hexo-theme-redefine)
+- 🌟 [Keep](https://github.com/XPoet/hexo-theme-keep)
 
 ### VuePress
 

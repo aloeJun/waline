@@ -7,13 +7,14 @@ export const zhNavbarConfig = navbar([
     text: '迁移',
     icon: 'migration',
     prefix: '/migration/',
-    children: ['client', 'valine', 'tool'],
+    children: ['v3', 'v2', 'valine', 'tool'],
   },
   {
     text: '参考',
     icon: 'reference',
     prefix: '/reference/',
     children: [
+      'api/',
       {
         text: '客户端',
         prefix: 'client/',
@@ -22,7 +23,7 @@ export const zhNavbarConfig = navbar([
       {
         text: '服务端',
         prefix: 'server/',
-        children: ['api', 'config', 'env'],
+        children: ['api', 'config', 'env', 'plugin'],
       },
     ],
   },
@@ -30,7 +31,14 @@ export const zhNavbarConfig = navbar([
     text: '高级',
     icon: 'advanced',
     prefix: '/advanced/',
-    children: ['intro', 'design', 'ecosystem', 'faq', 'contribution', 'privacy'],
+    children: [
+      'intro',
+      'design',
+      'ecosystem',
+      'faq',
+      'contribution',
+      'privacy',
+    ],
   },
 ]);
 
@@ -41,13 +49,14 @@ export const enNavbarConfig = navbar([
     text: 'Migration',
     icon: 'migration',
     prefix: '/en/migration/',
-    children: ['client', 'valine', 'tool'],
+    children: ['v3', 'v2', 'valine', 'tool'],
   },
   {
     text: 'Reference',
     icon: 'reference',
     prefix: '/en/reference/',
     children: [
+      'api/',
       {
         text: 'Client',
         prefix: 'client/',
@@ -56,7 +65,7 @@ export const enNavbarConfig = navbar([
       {
         text: 'server',
         prefix: 'server/',
-        children: ['api', 'config', 'env'],
+        children: ['api', 'config', 'env', 'plugin'],
       },
     ],
   },
@@ -64,6 +73,13 @@ export const enNavbarConfig = navbar([
     text: 'Advanced',
     icon: 'advanced',
     prefix: '/en/advanced/',
-    children: ['intro', 'design', 'ecosystem', 'faq', 'contribution', 'privacy'],
+    children: [
+      'intro',
+      'design',
+      'ecosystem',
+      'faq',
+      'contribution',
+      'privacy',
+    ],
   },
 ]);

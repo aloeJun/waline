@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import I18n from 'i18next';
 
 export default async function request(url, opts = {}) {
   if (typeof url === 'object') {
@@ -34,8 +34,8 @@ export default async function request(url, opts = {}) {
 
   const joiner = opts.url.includes('?') ? '&' : '?';
   const resp = await fetch(
-    `${baseUrl}${opts.url}${joiner}lang=${i18n.language}`,
-    opts
+    `${baseUrl}${opts.url}${joiner}lang=${I18n.language}`,
+    opts,
   );
 
   if (!resp.ok) {
@@ -47,13 +47,11 @@ export default async function request(url, opts = {}) {
 
     try {
       result = await resp.json();
-    } catch (e) {
+    } catch {
       // ignore
     }
 
-    throw new Error(
-      `${resp.status}: ${(result && result.errmsg) || resp.statusText}`
-    );
+    throw new Error(`${resp.status}: ${result?.errmsg || resp.statusText}`);
   }
 
   const result = await resp.json();

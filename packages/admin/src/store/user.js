@@ -1,5 +1,11 @@
-import { getUserInfo, login, logout, register, forgot } from '../services/auth';
-import { updateProfile } from '../services/user';
+import {
+  forgot,
+  getUserInfo,
+  login,
+  logout,
+  register,
+} from '../services/auth.js';
+import { updateProfile } from '../services/user.js';
 
 export const user = {
   state: null,
@@ -15,7 +21,7 @@ export const user = {
     async loadUserInfo() {
       const user = await getUserInfo();
 
-      if (!user || !user.email) {
+      if (!user?.email) {
         return;
       }
       if (window.opener) {
@@ -26,18 +32,19 @@ export const user = {
 
         window.opener.postMessage(
           { type: 'userInfo', data: { token, remember, ...user } },
-          '*'
+          '*',
         );
       }
 
       return dispatch.user.setUser(user);
     },
-    async login({ email, password, code, remember, recaptchaV3 }) {
+    async login({ email, password, code, remember, recaptchaV3, turnstile }) {
       const { token, ...user } = await login({
         email,
         password,
         code,
         recaptchaV3,
+        turnstile,
       });
 
       if (token) {
@@ -49,7 +56,7 @@ export const user = {
         if (window.opener) {
           window.opener.postMessage(
             { type: 'userInfo', data: { token, remember, ...user } },
-            '*'
+            '*',
           );
         }
       }

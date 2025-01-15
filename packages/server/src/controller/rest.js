@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('node:path');
 
 module.exports = class extends think.Controller {
   static get _REST() {
@@ -48,12 +48,23 @@ module.exports = class extends think.Controller {
 
   async hook(name, ...args) {
     const fn = this.config(name);
+    const plugins = think.getPluginHook(name);
 
-    if (!think.isFunction(fn)) {
-      return;
+    if (think.isFunction(fn)) {
+      plugins.unshift(fn);
     }
 
-    return fn.call(this, ...args);
+    for (const plugin of plugins) {
+      if (!think.isFunction(plugin)) {
+        continue;
+      }
+
+      const resp = await plugin.call(this, ...args);
+
+      if (resp) {
+        return resp;
+      }
+    }
   }
 
   __call() {}

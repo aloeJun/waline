@@ -1,7 +1,7 @@
 ---
 title: 在项目中导入
 icon: import
-redirectFrom: /guide/client/component.html
+order: 2
 ---
 
 Waline 官方客户端提供多种版本的文件。你可以通过多种方式引入并使用官方客户端。
@@ -47,7 +47,7 @@ yarn add -D @waline/client
 ```ts
 import { init } from '@waline/client';
 
-import '@waline/client/dist/waline.css';
+import '@waline/client/style';
 
 init({
   el: '#waline',
@@ -60,7 +60,7 @@ init({
 ```js
 import { init } from '@waline/client';
 
-import '@waline/client/dist/waline.css';
+import '@waline/client/style';
 
 init({
   el: '#waline',
@@ -87,6 +87,8 @@ import { Waline } from '@waline/client/component';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
+import '@waline/client/style';
+
 const serverURL = 'https://waline.vercel.app';
 const path = computed(() => useRoute().path);
 </script>
@@ -102,9 +104,13 @@ const path = computed(() => useRoute().path);
 
 ```tsx
 import React, { useEffect, useRef } from 'react';
-import { init } from '@waline/client';
+import {
+  type WalineInstance,
+  type WalineInitOptions,
+  init,
+} from '@waline/client';
 
-import type { WalineInstance, WalineInitOptions } from '@waline/client';
+import '@waline/client/style';
 
 export type WalineOptions = Omit<WalineInitOptions, 'el'> & { path: string };
 
@@ -123,7 +129,7 @@ export const Waline = (props: WalineOptions) => {
 
   useEffect(() => {
     walineInstanceRef.current?.update(props);
-  }, props);
+  }, [props]);
 
   return <div ref={containerRef} />;
 };
