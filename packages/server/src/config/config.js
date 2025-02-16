@@ -7,7 +7,9 @@ const {
   TIDB_PASSWORD,
   SQLITE_PATH,
   PG_DB,
+  POSTGRES_DATABASE,
   PG_PASSWORD,
+  POSTGRES_PASSWORD,
   MONGO_DB,
   MONGO_PASSWORD,
   FORBIDDEN_WORDS,
@@ -39,10 +41,12 @@ const {
   QQ_TEMPLATE,
   TG_TEMPLATE,
   WX_TEMPLATE,
+  SC_TEMPLATE,
   DISCORD_TEMPLATE,
   LARK_TEMPLATE,
 
   LEVELS,
+  COMMENT_AUDIT,
 } = process.env;
 
 let storage = 'leancloud';
@@ -53,9 +57,9 @@ if (LEAN_KEY) {
 } else if (MONGO_DB) {
   storage = 'mongodb';
   jwtKey = jwtKey || MONGO_PASSWORD;
-} else if (PG_DB) {
+} else if (PG_DB || POSTGRES_DATABASE) {
   storage = 'postgresql';
-  jwtKey = jwtKey || PG_PASSWORD;
+  jwtKey = jwtKey || PG_PASSWORD || POSTGRES_PASSWORD;
 } else if (SQLITE_PATH) {
   storage = 'sqlite';
 } else if (MYSQL_DB) {
@@ -119,6 +123,8 @@ module.exports = {
     !LEVELS || isFalse(LEVELS)
       ? false
       : LEVELS.split(/\s*,\s*/).map((v) => Number(v)),
+
+  audit: COMMENT_AUDIT && !isFalse(COMMENT_AUDIT),
   avatarProxy,
   oauthUrl,
   markdown,
@@ -129,6 +135,7 @@ module.exports = {
   QQTemplate: QQ_TEMPLATE,
   TGTemplate: TG_TEMPLATE,
   WXTemplate: WX_TEMPLATE,
+  SCTemplate: SC_TEMPLATE,
   DiscordTemplate: DISCORD_TEMPLATE,
   LarkTemplate: LARK_TEMPLATE,
 };

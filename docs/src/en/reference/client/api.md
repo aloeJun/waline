@@ -1,7 +1,6 @@
 ---
 title: Client API
 icon: config
-redirectFrom: /en/reference/client.html
 ---
 
 ## Client API
@@ -181,7 +180,7 @@ Type:
 
 ```ts
 const RecentComments: (
-  options: WalineRecentCommentsOptions
+  options: WalineRecentCommentsOptions,
 ) => Promise<WalineRecentCommentsResult>;
 ```
 
@@ -230,7 +229,7 @@ Type:
 
 ```ts
 const RecentComments: (
-  options: WalineRecentCommentsOptions
+  options: WalineRecentCommentsOptions,
 ) => Promise<WalineRecentCommentsResult>;
 ```
 

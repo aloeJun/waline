@@ -1,7 +1,7 @@
 ---
 title: 自定义样式
 icon: style
-redirectFrom: /guide/client/style.html
+order: -2
 ---
 
 `@waline/client` 提供了一些 CSS 变量。你可以很轻松的通过这些变量配置 waline 的样式。
@@ -41,14 +41,14 @@ redirectFrom: /guide/client/style.html
 <!-- Meta 图标 (可选) -->
 <link
   rel="stylesheet"
-  href="https://unpkg.com/@waline/client@v2/dist/waline-meta.css"
+  href="https://unpkg.com/@waline/client@v3/dist/waline-meta.css"
 />
 ```
 
 对于 NPM 用户，你可以通过以下方式导入:
 
 ```js
-import '@waline/client/waline-meta.css';
+import '@waline/client/meta';
 ```
 
 ## RTL 支持

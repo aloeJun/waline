@@ -1,4 +1,4 @@
-const Base = require('./base');
+const Base = require('./base.js');
 
 module.exports = class extends Base {
   checkAdmin() {
@@ -209,6 +209,17 @@ module.exports = class extends Base {
     const { LOGIN } = process.env;
     const { userInfo } = this.ctx.state;
 
+    this.rules = {
+      url: {
+        string: true,
+        required: true,
+      },
+      comment: {
+        string: true,
+        required: true,
+      },
+    };
+
     if (!think.isEmpty(userInfo)) {
       return;
     }
@@ -238,17 +249,10 @@ module.exports = class extends Base {
    */
   async putAction() {
     const { userInfo } = this.ctx.state;
-    const { like } = this.post();
+    const data = this.post();
 
-    // 1. like
-    if (think.isEmpty(userInfo) && think.isBoolean(like)) {
-      this.rules = {
-        like: {
-          required: true,
-          boolean: true,
-        },
-      };
-
+    // 1. like action
+    if (think.isBoolean(data.like) && Object.keys(data).toString() === 'like') {
       return;
     }
 
@@ -262,10 +266,7 @@ module.exports = class extends Base {
     }
 
     // 3. comment author modify comment content
-    const modelInstance = this.service(
-      `storage/${this.config('storage')}`,
-      'Comment'
-    );
+    const modelInstance = this.getModel('Comment');
     const commentData = await modelInstance.select({
       user_id: userInfo.objectId,
       objectId: this.id,
@@ -299,10 +300,7 @@ module.exports = class extends Base {
       return;
     }
 
-    const modelInstance = this.service(
-      `storage/${this.config('storage')}`,
-      'Comment'
-    );
+    const modelInstance = this.getModel('Comment');
     const commentData = await modelInstance.select({
       user_id: userInfo.objectId,
       objectId: this.id,

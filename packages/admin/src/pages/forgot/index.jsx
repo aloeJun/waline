@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 
-import Header from '../../components/Header';
+import Header from '../../components/Header.jsx';
 
 export default function () {
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ export default function () {
       });
       alert(t('find password success! please go to your mailbox to reset it!'));
       navigate('/ui/login');
-    } catch (e) {
+    } catch {
       setError(t('find password error! try again later'));
     } finally {
       setSubmitting(false);
@@ -73,7 +73,7 @@ export default function () {
                 />
                 <p className="description" style={{ textAlign: 'left' }}>
                   {t(
-                    'you will receive an email which contains a link to create new password'
+                    'you will receive an email which contains a link to create new password',
                   )}
                 </p>
               </li>

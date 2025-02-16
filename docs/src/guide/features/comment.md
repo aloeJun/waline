@@ -1,7 +1,7 @@
 ---
 title: 评论数统计
 icon: counter
-redirectFrom: /guide/client/comment.html
+order: 8
 ---
 
 Waline 支持显示评论数。
@@ -14,7 +14,7 @@ Waline 支持显示评论数。
 
 ```html
 <script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
 
   init({
     el: '#waline',
@@ -42,15 +42,12 @@ Waline 会在初始化以及每次 path 更新时，自动查找页面中 `class
 ::: tip 例子
 
 ```html
-当前页共有
-<span class="waline-comment-count" data-path="/cookbook/comment.html" />条评论。
+当前页共有 <span class="waline-comment-count" /> 条评论，主页共有
+<span class="waline-comment-count" data-path="/" /> 条评论。
 ```
 
-当前页共有
-<span
-  class="waline-comment-count"
-  data-path="/cookbook/comment.html"
-/>条评论。
+当前页共有 <span class="waline-comment-count" /> 条评论，主页共有
+<span class="waline-comment-count" data-path="/" /> 条评论。
 
 :::
 
@@ -60,7 +57,7 @@ Waline 会在初始化以及每次 path 更新时，自动查找页面中 `class
 
 ```html
 <script type="module">
-  import { commentCount } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+  import { commentCount } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
 
   commentCount({
     serverURL,
@@ -96,7 +93,7 @@ setTimeout(() => abort(), 500);
 
 ```html
 <script type="module">
-  import { commentCount } from 'https://unpkg.com/@waline/client@v2/dist/comment.mjs';
+  import { commentCount } from 'https://unpkg.com/@waline/client@v3/dist/comment.js';
 
   commentCount({
     serverURL,
@@ -107,3 +104,20 @@ setTimeout(() => abort(), 500);
   });
 </script>
 ```
+
+<script setup>
+import { walineOptions } from '@source/.vuepress/client.ts'
+import { commentCount } from '@waline/client/comment'
+import { onMounted } from 'vue'
+import { useRoute } from 'vuepress/client'
+
+const { serverURL } = walineOptions
+const route = useRoute()
+
+onMounted(()=>{
+  commentCount({
+    serverURL: serverURL,
+    path: route.path,
+  })
+})
+</script>

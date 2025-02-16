@@ -2,7 +2,7 @@ const { performance } = require('perf_hooks');
 
 const { Deta } = require('deta');
 
-const Base = require('./base');
+const Base = require('./base.js');
 
 module.exports = class extends Base {
   constructor(tableName) {
@@ -153,8 +153,8 @@ module.exports = class extends Base {
     if (think.isArray(conditions)) {
       return Promise.all(
         conditions.map((condition) =>
-          this.select(condition, { limit, offset, field })
-        )
+          this.select(condition, { limit, offset, field }),
+        ),
       ).then((data) => data.flat());
     }
 
@@ -172,7 +172,7 @@ module.exports = class extends Base {
        */
       const item = await this.instance.get(conditions.key);
 
-      item && data.push(item);
+      if (item) data.push(item);
     } else if (offset) {
       /**
        * deta base need last data key when pagination
@@ -213,9 +213,10 @@ module.exports = class extends Base {
 
       fieldMap.add('objectId');
       data.forEach((item) => {
-        for (const k in item) {
-          if (!fieldMap.has(k)) {
-            delete item[k];
+        for (const key in item) {
+          if (!fieldMap.has(key)) {
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+            delete item[key];
           }
         }
       });
@@ -230,7 +231,7 @@ module.exports = class extends Base {
 
       if (think.isArray(conditions)) {
         return Promise.all(
-          conditions.map((condition) => this.count(condition))
+          conditions.map((condition) => this.count(condition)),
         ).then((counts) => counts.reduce((a, b) => a + b, 0));
       }
 
@@ -254,18 +255,18 @@ module.exports = class extends Base {
         groupFlatValue[group] = null;
       });
 
-      for (let j = 0; j < where._complex[groupName][1].length; j++) {
+      for (const item of where._complex[groupName][1]) {
         const groupWhere = {
           ...where,
           ...groupFlatValue,
           _complex: undefined,
-          [groupName]: where._complex[groupName][1][j],
+          [groupName]: item,
         };
         const num = await this.count(groupWhere);
 
         counts.push({
           ...groupFlatValue,
-          [groupName]: where._complex[groupName][1][j],
+          [groupName]: item,
           count: num,
         });
       }
@@ -295,7 +296,7 @@ module.exports = class extends Base {
         await this.instance.put(nextData, item.objectId);
 
         return nextData;
-      })
+      }),
     );
   }
 
@@ -303,7 +304,7 @@ module.exports = class extends Base {
     const items = await this.select(where);
 
     return Promise.all(
-      items.map(({ objectId }) => this.instance.delete(objectId))
+      items.map(({ objectId }) => this.instance.delete(objectId)),
     );
   }
 };

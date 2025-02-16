@@ -1,6 +1,6 @@
 // The hooks original author is @hupe1980 fork from https://github.com/hupe1980/react-script-hook/blob/master/src/use-script.tsx
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Previously loading/loaded scripts and their current status
 export const scripts = {};
@@ -38,7 +38,7 @@ export default function useScript({
   }
 
   const [loading, setLoading] = useState(
-    status ? status.loading : Boolean(src)
+    status ? status.loading : Boolean(src),
   );
   const [error, setError] = useState(status ? status.error : null);
   // Tracks if script is loaded so we can avoid duplicate script tags

@@ -1,6 +1,6 @@
 {
   "name": "@waline/client",
-  "version": "2.14.9",
+  "version": "3.5.2",
   "description": "client for waline comment system",
   "keywords": [
     "valine",
@@ -16,89 +16,52 @@
   "author": {
     "name": "Mr.Hope",
     "email": "mister-hope@outlook.com",
-    "url": "https://mrhope.site"
+    "url": "https://mister-hope.com"
   },
+  "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/shim.d.ts",
-      "import": "./dist/shim.mjs",
-      "require": "./dist/shim.cjs",
-      "default": "./dist/shim.cjs"
-    },
-    "./api": {
-      "types": "./dist/api.d.ts",
-      "require": "./dist/api.cjs",
-      "default": "./dist/api.mjs"
+      "types": "./dist/slim.d.ts",
+      "default": "./dist/slim.js"
     },
     "./component": {
-      "default": "./dist/component.mjs"
+      "types": "./dist/component.d.ts",
+      "default": "./dist/component.js"
     },
     "./full": {
       "types": "./dist/waline.d.ts",
-      "import": "./dist/waline.mjs",
-      "require": "./dist/waline.cjs",
-      "default": "./dist/waline.js"
+      "import": "./dist/waline.js",
+      "default": "./dist/waline.umd.js"
     },
     "./comment": {
       "types": "./dist/comment.d.ts",
-      "import": "./dist/comment.mjs",
-      "require": "./dist/comment.cjs",
-      "default": "./dist/comment.js"
+      "import": "./dist/comment.js",
+      "default": "./dist/comment.umd.js"
     },
     "./pageview": {
       "types": "./dist/pageview.d.ts",
-      "import": "./dist/pageview.mjs",
-      "require": "./dist/pageview.cjs",
-      "default": "./dist/pageview.js"
+      "import": "./dist/pageview.js",
+      "default": "./dist/pageview.umd.js"
     },
+    "./style": "./dist/waline.css",
+    "./meta": "./dist/waline-meta.css",
     "./waline.css": "./dist/waline.css",
     "./waline-meta.css": "./dist/waline-meta.css",
-    "./dist/api": {
-      "types": "./dist/api.d.ts",
-      "require": "./dist/api.cjs",
-      "default": "./dist/api.mjs"
-    },
-    "./dist/component": {
-      "default": "./dist/component.mjs"
-    },
-    "./dist/comment": {
-      "types": "./dist/comment.d.ts",
-      "import": "./dist/comment.mjs",
-      "require": "./dist/comment.cjs",
-      "default": "./dist/comment.js"
-    },
-    "./dist/pageview": {
-      "types": "./dist/pageview.d.ts",
-      "import": "./dist/pageview.mjs",
-      "require": "./dist/pageview.cjs",
-      "default": "./dist/pageview.js"
-    },
-    "./dist/waline": {
-      "types": "./dist/waline.d.ts",
-      "import": "./dist/waline.mjs",
-      "require": "./dist/waline.cjs",
-      "default": "./dist/waline.js"
-    },
-    "./dist/waline.css": "./dist/waline.css",
-    "./dist/waline-meta.css": "./dist/waline-meta.css",
-    "./dist/*": "./dist/*",
-    "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
-  "main": "./dist/shim.cjs",
-  "module": "./dist/shim.mjs",
-  "browser": "./dist/legacy.umd.js",
-  "types": "./dist/shim.d.mts",
+  "main": "./dist/slim.js",
+  "module": "./dist/slim.js",
+  "browser": "./dist/waline.umd.js",
+  "types": "./dist/slim.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "build": "pnpm rollup && pnpm style",
     "clean": "rimraf ./dist",
     "dev": "vite",
     "prepublishOnly": "pnpm clean && pnpm build",
-    "rollup": "rollup -c",
+    "rollup": "rollup -c rollup.config.ts --configPlugin esbuild",
     "style": "pnpm style:main && pnpm style:meta",
     "style:main": "sass ./src/styles/index.scss ./dist/waline.css --style=compressed",
     "style:meta": "sass ./src/styles/meta.scss ./dist/waline-meta.css --style=compressed"
@@ -119,23 +82,27 @@
     ]
   },
   "dependencies": {
-    "@vueuse/core": "^9.13.0",
+    "@vueuse/core": "^12.7.0",
+    "@waline/api": "^1.0.0",
     "autosize": "^6.0.1",
-    "marked": "^4.3.0",
-    "vue": "^3.2.47"
+    "marked": "^15.0.7",
+    "marked-highlight": "^2.2.1",
+    "recaptcha-v3": "^1.11.3",
+    "vue": "^3.5.13"
   },
   "devDependencies": {
-    "@babel/core": "7.21.3",
-    "@babel/preset-env": "7.20.2",
-    "@giphy/js-types": "4.4.0",
-    "@types/autosize": "4.0.1",
-    "@types/marked": "4.0.8",
-    "@vitejs/plugin-vue": "4.1.0",
-    "recaptcha-v3": "1.10.0",
-    "user-agent-data-types": "0.3.1",
-    "vite": "4.2.1"
+    "@babel/core": "7.26.9",
+    "@babel/preset-env": "7.26.9",
+    "@giphy/js-types": "5.1.0",
+    "@types/autosize": "4.0.3",
+    "@vitejs/plugin-vue": "5.2.1",
+    "user-agent-data-types": "0.4.2",
+    "vite": "6.1.0"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "provenance": true
   }
 }

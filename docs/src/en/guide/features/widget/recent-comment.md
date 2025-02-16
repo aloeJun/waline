@@ -1,7 +1,6 @@
 ---
 title: Recent comment Widget
 icon: recent
-redirectFrom: /en/guide/client/widget/recent-comment.html
 ---
 
 Waline supports displaying recent comments by widget, which is convenient for displaying the latest comments in the sidebar of the blog.
@@ -58,7 +57,7 @@ Example:
     count: 10,
   }).then(({ comments }) => {
     document.getElementById('waline-recent').innerHTML = comments.map(
-      (comment) => `${comment.nick}: ${comment.comment}`
+      (comment) => `${comment.nick}: ${comment.comment}`,
     );
   });
 </script>

@@ -1,4 +1,4 @@
-const BaseRest = require('./rest');
+const BaseRest = require('./rest.js');
 
 module.exports = class extends BaseRest {
   async getAction() {
@@ -14,10 +14,8 @@ module.exports = class extends BaseRest {
       },
     };
 
-    for (let i = 0; i < exportData.tables.length; i++) {
-      const tableName = exportData.tables[i];
-      const storage = this.config('storage');
-      const model = this.service(`storage/${storage}`, tableName);
+    for (const tableName of exportData.tables) {
+      const model = this.getModel(tableName);
 
       const data = await model.select({});
 
@@ -31,12 +29,24 @@ module.exports = class extends BaseRest {
     const { table } = this.get();
     const item = this.post();
     const storage = this.config('storage');
-    const model = this.service(`storage/${storage}`, table);
+    const model = this.getModel(table);
 
     if (storage === 'leancloud' || storage === 'mysql') {
-      item.insertedAt && (item.insertedAt = new Date(item.insertedAt));
-      item.createdAt && (item.createdAt = new Date(item.createdAt));
-      item.updatedAt && (item.updatedAt = new Date(item.updatedAt));
+      if (item.insertedAt) item.insertedAt = new Date(item.insertedAt);
+      if (item.createdAt) item.createdAt = new Date(item.createdAt);
+      if (item.updatedAt) item.updatedAt = new Date(item.updatedAt);
+    }
+
+    if (storage === 'mysql') {
+      if (item.insertedAt)
+        item.insertedAt = think.datetime(
+          item.insertedAt,
+          'YYYY-MM-DD HH:mm:ss',
+        );
+      if (item.createdAt)
+        item.createdAt = think.datetime(item.createdAt, 'YYYY-MM-DD HH:mm:ss');
+      if (item.updatedAt)
+        item.updatedAt = think.datetime(item.updatedAt, 'YYYY-MM-DD HH:mm:ss');
     }
 
     delete item.objectId;
@@ -48,8 +58,7 @@ module.exports = class extends BaseRest {
   async putAction() {
     const { table, objectId } = this.get();
     const data = this.post();
-    const storage = this.config('storage');
-    const model = this.service(`storage/${storage}`, table);
+    const model = this.getModel(table);
 
     delete data.objectId;
     delete data.createdAt;
@@ -61,8 +70,7 @@ module.exports = class extends BaseRest {
 
   async deleteAction() {
     const { table } = this.get();
-    const storage = this.config('storage');
-    const model = this.service(`storage/${storage}`, table);
+    const model = this.getModel(table);
 
     await model.delete({});
 

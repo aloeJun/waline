@@ -79,7 +79,7 @@ module.exports = {
       const { region } = result;
       const [, , province, city, isp] = region.split('|');
       const address = Array.from(
-        new Set([province, city, isp].filter((v) => v))
+        new Set([province, city, isp].filter((v) => v)),
       );
 
       return address.slice(0, depth).join(' ');
@@ -92,13 +92,66 @@ module.exports = {
   uaParser(uaText) {
     const ua = parser(uaText);
 
-    if (
-      OS_VERSION_MAP[ua.os.name] &&
-      OS_VERSION_MAP[ua.os.name][ua.os.version]
-    ) {
+    if (OS_VERSION_MAP[ua.os.name]?.[ua.os.version]) {
       ua.os.version = OS_VERSION_MAP[ua.os.name][ua.os.version];
     }
 
     return ua;
+  },
+  getLevel(val) {
+    const levels = this.config('levels');
+    const defaultLevel = 0;
+
+    if (!val) {
+      return defaultLevel;
+    }
+
+    const level = think.findLastIndex(levels, (l) => l <= val);
+
+    return level === -1 ? defaultLevel : level;
+  },
+  pluginMap(type, callback) {
+    const plugins = think.config('plugins');
+    const fns = [];
+
+    if (!think.isArray(plugins)) {
+      return fns;
+    }
+
+    for (const plugin of plugins) {
+      if (!plugin?.[type]) {
+        continue;
+      }
+
+      const res = callback(plugin[type]);
+
+      if (!res) {
+        continue;
+      }
+
+      fns.push(res);
+    }
+
+    return fns;
+  },
+  getPluginMiddlewares() {
+    const middlewares = think.pluginMap('middlewares', (middleware) => {
+      if (think.isFunction(middleware)) {
+        return middleware;
+      }
+
+      if (think.isArray(middleware)) {
+        return middleware.filter((m) => think.isFunction(m));
+      }
+    });
+
+    return middlewares.flat();
+  },
+  getPluginHook(hookName) {
+    return think
+      .pluginMap('hooks', (hook) =>
+        think.isFunction(hook[hookName]) ? hook[hookName] : undefined,
+      )
+      .filter((v) => v);
   },
 };

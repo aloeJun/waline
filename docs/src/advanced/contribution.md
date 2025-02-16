@@ -1,7 +1,7 @@
 ---
 title: 贡献指南
 icon: contribute
-redirectFrom: /reference/contribution.html
+order: -1
 ---
 
 欢迎大家为 waline 提交 Pull Request！:tada:
@@ -49,8 +49,8 @@ redirectFrom: /reference/contribution.html
 
   ::: tip
 
-  为了使 `@waline/server` 能在本地正常运行，你需要配置必要的本地环境变量至 `example/.env`。
+  为了使 `@waline/server` 能在本地正常运行，你需要配置必要的本地环境变量至 `.env`。
 
-  在 `example/.env.example` 我们准备了示例供你参考
+  在 `.env.example` 我们准备了示例供你参考
 
   :::

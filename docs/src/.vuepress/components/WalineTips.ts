@@ -1,4 +1,4 @@
-import { usePageFrontmatter, useRouteLocale } from '@vuepress/client';
+import { usePageFrontmatter, useRouteLocale } from 'vuepress/client';
 import { computed, defineComponent, h } from 'vue';
 
 import type { VNode } from 'vue';
@@ -24,7 +24,7 @@ export default defineComponent({
     >();
     const routeLocale = useRouteLocale();
 
-    const isHome = computed(() => frontmatter.value.home || false);
+    const isHome = computed(() => frontmatter.value.home ?? false);
     const text = computed(() => i18n[routeLocale.value]);
 
     return (): VNode =>
@@ -34,7 +34,7 @@ export default defineComponent({
         h('div', {
           class: 'waline-tips',
           innerHTML: text.value,
-        })
+        }),
       );
   },
 });

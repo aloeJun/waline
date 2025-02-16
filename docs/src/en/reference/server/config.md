@@ -1,7 +1,6 @@
 ---
 title: Server Config
 icon: config
-redirectFrom: /en/reference/server.html
 ---
 
 The following options need to be configured in the server entry file `index.js`.
@@ -15,6 +14,12 @@ We recommend you to create a repo from the official template and make your chang
 :::
 
 ## Basic Options
+
+### plugins
+
+- Type: `plugin[]`
+
+See [Plugin System](./plugin.md) for details
 
 ### secureDomains
 
@@ -115,6 +120,24 @@ The QQ comment notification template, which is equivalent to the environment var
 - Type: `string`
 
 Telegram comment notification template, which is equivalent to the environment variable `TG_TEMPLATE`.
+
+### model
+
+- type: `class`
+
+For details, see [Customize Database Service](../../cookbook/customize/database.md)
+
+### encryptPassword
+
+- type: `function`
+
+See [Customize User System](../../cookbook/customize/userdb.md) for details
+
+### locales
+
+- type: `Record<string, Record<string, string>>`
+
+See [Custom Locale](../../cookbook/customize/locale.md)
 
 ## Comment Hooks
 

@@ -1,7 +1,6 @@
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 
 const FormData = require('form-data');
-const fetch = require('node-fetch');
 const nodemailer = require('nodemailer');
 const nunjucks = require('nunjucks');
 
@@ -87,8 +86,16 @@ module.exports = class extends think.Service {
       },
     };
 
+    const contentWechat =
+      think.config('SCTemplate') ||
+      `{{site.name|safe}} 有新评论啦
+【评论者昵称】：{{self.nick}}
+【评论者邮箱】：{{self.mail}} 
+【内容】：{{self.comment}}
+【地址】：{{site.postUrl}}`;
+
     title = this.ctx.locale(title, data);
-    content = this.ctx.locale(content, data);
+    content = this.ctx.locale(contentWechat, data);
 
     const form = new FormData();
 
@@ -103,7 +110,8 @@ module.exports = class extends think.Service {
   }
 
   async qywxAmWechat({ title, content }, self, parent) {
-    const { QYWX_AM, SITE_NAME, SITE_URL } = process.env;
+    const { QYWX_AM, QYWX_PROXY, QYWX_PROXY_PORT, SITE_NAME, SITE_URL } =
+      process.env;
 
     if (!QYWX_AM) {
       return false;
@@ -128,6 +136,7 @@ module.exports = class extends think.Service {
         postUrl: SITE_URL + self.url + '#' + self.objectId,
       },
     };
+
     const contentWechat =
       think.config('WXTemplate') ||
       `💬 {{site.name|safe}}的文章《{{postName}}》有新评论啦 
@@ -146,17 +155,27 @@ module.exports = class extends think.Service {
     querystring.set('corpid', `${QYWX_AM_AY[0]}`);
     querystring.set('corpsecret', `${QYWX_AM_AY[1]}`);
 
+    let baseUrl = 'https://qyapi.weixin.qq.com';
+
+    if (QYWX_PROXY) {
+      if (!QYWX_PROXY_PORT) {
+        baseUrl = `http://${QYWX_PROXY}`;
+      } else {
+        baseUrl = `http://${QYWX_PROXY}:${QYWX_PROXY_PORT}`;
+      }
+    }
+
     const { access_token } = await fetch(
-      `https://qyapi.weixin.qq.com/cgi-bin/gettoken?${querystring.toString()}`,
+      `${baseUrl}/cgi-bin/gettoken?${querystring.toString()}`,
       {
         headers: {
           'content-type': 'application/json',
         },
-      }
+      },
     ).then((resp) => resp.json());
 
     return fetch(
-      `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${access_token}`,
+      `${baseUrl}/cgi-bin/message/send?access_token=${access_token}`,
       {
         method: 'POST',
         headers: {
@@ -179,12 +198,12 @@ module.exports = class extends think.Service {
             ],
           },
         }),
-      }
+      },
     ).then((resp) => resp.json());
   }
 
   async qq(self, parent) {
-    const { QMSG_KEY, QQ_ID, SITE_NAME, SITE_URL } = process.env;
+    const { QMSG_KEY, QQ_ID, SITE_NAME, SITE_URL, QMSG_HOST } = process.env;
 
     if (!QMSG_KEY) {
       return false;
@@ -219,7 +238,11 @@ module.exports = class extends think.Service {
     form.append('msg', this.ctx.locale(contentQQ, data));
     form.append('qq', QQ_ID);
 
-    return fetch(`https://qmsg.zendee.cn/send/${QMSG_KEY}`, {
+    const qmsgHost = QMSG_HOST
+      ? QMSG_HOST.replace(/\/$/, '')
+      : 'https://qmsg.zendee.cn';
+
+    return fetch(`${qmsgHost}/send/${QMSG_KEY}`, {
       method: 'POST',
       header: form.getHeaders(),
       body: form,
@@ -237,7 +260,7 @@ module.exports = class extends think.Service {
     const href = self.comment.match(/<a href="(.*?)">(.*?)<\/a>/g);
 
     if (href !== null) {
-      for (var i = 0; i < href.length; i++) {
+      for (let i = 0; i < href.length; i++) {
         href[i] =
           '[Link: ' +
           href[i].replace(/<a href="(.*?)">(.*?)<\/a>/g, '$2') +
@@ -295,7 +318,7 @@ module.exports = class extends think.Service {
         method: 'POST',
         header: form.getHeaders(),
         body: form,
-      }
+      },
     ).then((resp) => resp.json());
 
     if (!resp.ok) {
@@ -334,13 +357,13 @@ module.exports = class extends think.Service {
 
     const form = new FormData();
 
-    topic && form.append('topic', topic);
-    template && form.append('template', template);
-    channel && form.append('channel', channel);
-    webhook && form.append('webhook', webhook);
-    callbackUrl && form.append('callbackUrl', callbackUrl);
-    title && form.append('title', title);
-    content && form.append('content', content);
+    if (topic) form.append('topic', topic);
+    if (template) form.append('template', template);
+    if (channel) form.append('channel', channel);
+    if (webhook) form.append('webhook', webhook);
+    if (callbackUrl) form.append('callbackUrl', callbackUrl);
+    if (title) form.append('title', title);
+    if (content) form.append('content', content);
 
     return fetch(`http://www.pushplus.plus/send/${PUSH_PLUS_KEY}`, {
       method: 'POST',
@@ -374,7 +397,7 @@ module.exports = class extends think.Service {
     【评论者邮箱】：{{self.mail}} 
     【内容】：{{self.comment}} 
     【地址】：{{site.postUrl}}`,
-      data
+      data,
     );
 
     const form = new FormData();
@@ -385,7 +408,9 @@ module.exports = class extends think.Service {
       method: 'POST',
       header: form.getHeaders(),
       body: form,
-    }).then((resp) => resp.json());
+    }).then((resp) => resp.statusText);
+    // Expected return value: No Content
+    // Since Discord doesn't return any response body on success, we just return the status text.
   }
 
   async lark({ title, content }, self, parent) {
@@ -410,7 +435,7 @@ module.exports = class extends think.Service {
     content = nunjucks.renderString(
       think.config('LarkTemplate') ||
         `【网站名称】：{{site.name|safe}} \n【评论者昵称】：{{self.nick}}\n【评论者邮箱】：{{self.mail}}\n【内容】：{{self.comment}}【地址】：{{site.postUrl}}`,
-      data
+      data,
     );
 
     const post = {
@@ -473,13 +498,14 @@ module.exports = class extends think.Service {
 
     const mailList = [];
     const isAuthorComment = AUTHOR
-      ? comment.mail.toLowerCase() === AUTHOR.toLowerCase()
+      ? (comment.mail || '').toLowerCase() === AUTHOR.toLowerCase()
       : false;
     const isReplyAuthor = AUTHOR
-      ? parent && parent.mail.toLowerCase() === AUTHOR.toLowerCase()
+      ? parent && (parent.mail || '').toLowerCase() === AUTHOR.toLowerCase()
       : false;
     const isCommentSelf =
-      parent && parent.mail.toLowerCase() === comment.mail.toLowerCase();
+      parent &&
+      (parent.mail || '').toLowerCase() === (comment.mail || '').toLowerCase();
 
     const title = mailSubjectAdmin || 'MAIL_SUBJECT_ADMIN';
     const content = mailTemplateAdmin || 'MAIL_TEMPLATE_ADMIN';
@@ -489,7 +515,7 @@ module.exports = class extends think.Service {
       const qywxAmWechat = await this.qywxAmWechat(
         { title, content },
         comment,
-        parent
+        parent,
       );
       const qq = await this.qq(comment, parent);
       const telegram = await this.telegram(comment, parent);
@@ -499,15 +525,15 @@ module.exports = class extends think.Service {
 
       if (
         [wechat, qq, telegram, qywxAmWechat, pushplus, discord, lark].every(
-          think.isEmpty
+          think.isEmpty,
         )
       ) {
         mailList.push({ to: AUTHOR, title, content });
       }
     }
 
-    const disallowList = ['github', 'twitter', 'facebook'].map(
-      (social) => 'mail.' + social
+    const disallowList = ['github', 'twitter', 'facebook', 'qq', 'weibo'].map(
+      (social) => 'mail.' + social,
     );
     const fakeMail = new RegExp(`@(${disallowList.join('|')})$`, 'i');
 
@@ -525,9 +551,9 @@ module.exports = class extends think.Service {
       });
     }
 
-    for (let i = 0; i < mailList.length; i++) {
+    for (const mail of mailList) {
       try {
-        const response = await this.mail(mailList[i], comment, parent);
+        const response = await this.mail(mail, comment, parent);
 
         console.log('Notification mail send success: %s', response);
       } catch (e) {

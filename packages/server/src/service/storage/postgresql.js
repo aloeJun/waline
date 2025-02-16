@@ -1,5 +1,21 @@
-const MySQL = require('./mysql');
+const MySQL = require('./mysql.js');
 
+function mapKeys({ insertedat, createdat, updatedat, ...item }) {
+  const mapFields = {
+    insertedAt: insertedat,
+    createdAt: createdat,
+    updatedAt: updatedat,
+  };
+
+  for (const field in mapFields) {
+    if (!mapFields[field]) {
+      continue;
+    }
+    item[field] = mapFields[field];
+  }
+
+  return item;
+}
 module.exports = class extends MySQL {
   model(tableName) {
     return super.model(tableName.toLowerCase());
@@ -12,7 +28,7 @@ module.exports = class extends MySQL {
       lowerWhere[i.toLowerCase()] = where[i];
     }
 
-    if (options && options.desc) {
+    if (options?.desc) {
       options.desc = options.desc.toLowerCase();
     }
 
@@ -22,22 +38,7 @@ module.exports = class extends MySQL {
 
     const data = await super.select(lowerWhere, options);
 
-    return data.map(({ insertedat, createdat, updatedat, ...item }) => {
-      const mapFields = {
-        insertedAt: insertedat,
-        createdAt: createdat,
-        updatedAt: updatedat,
-      };
-
-      for (const field in mapFields) {
-        if (!mapFields[field]) {
-          continue;
-        }
-        item[field] = mapFields[field];
-      }
-
-      return item;
-    });
+    return data.map(mapKeys);
   }
 
   async add(data) {
@@ -50,10 +51,11 @@ module.exports = class extends MySQL {
           val instanceof Date
             ? think.datetime(val, 'YYYY-MM-DD HH:mm:ss')
             : val;
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete data[key];
       });
 
-    return super.add(data);
+    return super.add(data).then(mapKeys);
   }
 
   async count(...args) {
@@ -78,7 +80,7 @@ module.exports = class extends MySQL {
     const instance = this.model(this.tableName);
 
     return instance.query(
-      `ALTER SEQUENCE ${instance.tableName}_seq RESTART WITH ${id};`
+      `ALTER SEQUENCE ${instance.tableName}_seq RESTART WITH ${id};`,
     );
   }
 };

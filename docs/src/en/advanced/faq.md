@@ -1,6 +1,7 @@
 ---
 title: FAQ
 icon: faq
+order: 4
 ---
 
 Waline has a very clear position since its birth:
@@ -48,15 +49,11 @@ Go to the corresponding GitHub repository and modify the version number of `@wal
 
 ![vercel](./assets/vercel-update.png)
 
-#### Deta
-
-[Deta - How to update?](../guide/deploy/deta.md#how-to-update)
-
 #### CloudBase
 
 Enter the code editing page, click <kbd>Save and reinstall dependencies</kbd>. If it still doesn’t work, enter <kbd>My Application</kbd> and select <kbd>Deploy</kbd> to redeploy.
 
-::: danger
+::: caution
 
 Redeployment will clear the previous files. If there is a configuration in the previous file, it needs to be backed up first.
 

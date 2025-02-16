@@ -1,24 +1,14 @@
 import md5 from 'md5';
 
-export function buildAvatar(email = '', avatar = '') {
-  if (avatar) {
-    return avatar;
-  }
+export const buildAvatar = (email = '', avatar = '') => {
+  if (avatar) return avatar;
 
-  if (typeof email !== 'string') {
-    email = '';
-  }
+  if (typeof email !== 'string') email = '';
 
   return `https://sdn.geekzu.org/avatar/${md5(email)}?s=40&r=G&d=`;
-}
+};
 
-export function getPostUrl(url) {
-  if (!window.SITE_URL) {
-    return url;
-  }
-
-  return window.SITE_URL + url;
-}
+export const getPostUrl = (url) => (window.SITE_URL || '') + url;
 
 export function formatDate(time) {
   let d;
@@ -27,7 +17,7 @@ export function formatDate(time) {
     d = new Date(time);
   } else {
     d = new Date(
-      /\d+-\d+-\d+\s\d+:\d+:\d+/.test(time) ? time.replace(/-/g, '/') : time
+      /\d+-\d+-\d+\s\d+:\d+:\d+/.test(time) ? time.replace(/-/g, '/') : time,
     );
   }
 

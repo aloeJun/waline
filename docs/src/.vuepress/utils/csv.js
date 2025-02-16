@@ -1,3 +1,4 @@
+/* eslint-disable */
 var CSV = {};
 !(function (p) {
   'use strict';
@@ -135,10 +136,10 @@ var CSV = {};
             ? l !== i.quotechar
               ? (c += l)
               : s
-              ? e.charAt(o + 1) === i.quotechar
-                ? ((c += i.quotechar), (o += 1))
-                : (s = !1)
-              : (u = s = !0)
+                ? e.charAt(o + 1) === i.quotechar
+                  ? ((c += i.quotechar), (o += 1))
+                  : (s = !1)
+                : (u = s = !0)
             : ((c = a(c)),
               f.push(c),
               l === i.lineterminator && (d.push(f), (f = [])),
@@ -189,9 +190,9 @@ var CSV = {};
             null === e
               ? (e = '')
               : 'string' == typeof e && f.test(e)
-              ? (a.doublequote && (e = e.replace(/"/g, '""')),
-                (e = a.quotechar + e + a.quotechar))
-              : 'number' == typeof e && (e = e.toString(10)),
+                ? (a.doublequote && (e = e.replace(/"/g, '""')),
+                  (e = a.quotechar + e + a.quotechar))
+                : 'number' == typeof e && (e = e.toString(10)),
             e
           );
         },

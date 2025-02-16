@@ -1,7 +1,9 @@
-import { getUserList, WalineUser } from '../api';
-import { DEFAULT_LANG, DEFAULT_LOCALES } from '../config';
-import { WalineLocale } from '../typings';
-import { getRoot } from '../utils';
+import type { WalineUser } from '@waline/api';
+import { getUserList } from '@waline/api';
+
+import { getLocale } from '../config/index.js';
+import type { WalineLocale } from '../typings/index.js';
+import { getRoot } from '../utils/index.js';
 
 export interface WalineUserListOptions {
   /**
@@ -93,7 +95,7 @@ export const UserList = ({
       };
 
     locale = {
-      ...(DEFAULT_LOCALES[lang] || DEFAULT_LOCALES[DEFAULT_LANG]),
+      ...getLocale(lang),
       ...(typeof locale === 'object' ? locale : {}),
     } as WalineLocale;
 
@@ -121,7 +123,7 @@ export const UserList = ({
           '</li>',
         ]
           .filter((v) => v)
-          .join('')
+          .join(''),
       )
       .join('')}</ul>`;
 

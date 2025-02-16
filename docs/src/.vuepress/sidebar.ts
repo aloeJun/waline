@@ -1,108 +1,12 @@
 import { sidebar } from 'vuepress-theme-hope';
 
 export const zhSidebarConfig = sidebar({
-  '/cookbook/': [
-    {
-      text: '导入',
-      icon: 'import',
-      prefix: 'import/',
-      children: ['cdn', 'project'],
-    },
-    'syntax',
-    {
-      text: '自定义',
-      icon: 'customize',
-      prefix: 'customize/',
-      children: [
-        'emoji',
-        'locale',
-        'highlighter',
-        'image-preview',
-        'search',
-        'tex-renderer',
-        'upload-image',
-      ],
-    },
-    'reactivity',
-    {
-      text: '兼容',
-      icon: 'history',
-      children: ['legacy', 'emoji-compact'],
-    },
-  ],
-  '/guide/': [
-    {
-      text: '快速上手',
-      icon: 'creative',
-      prefix: 'get-started/',
-      children: ['', 'client', 'server'],
-    },
-    {
-      text: '功能',
-      icon: 'feature',
-      prefix: 'features/',
-      children: [
-        'syntax',
-        'emoji',
-        'search',
-        'reaction',
-        'label',
-        'i18n',
-        'pageview',
-        'comment',
-        'safety',
-        'notification',
-        'style',
-        'widget/',
-      ],
-    },
-    'database',
-    {
-      text: '部署',
-      icon: 'deploy',
-      prefix: 'deploy/',
-      children: [
-        'vercel',
-        'cloudbase',
-        'deta',
-        'railway',
-        'zeabur',
-        'netlify',
-        'baidu-cfc',
-        'aliyun-fc',
-        'vps',
-      ],
-    },
-  ],
   '/': [
     {
       text: '指南',
       icon: 'creative',
       prefix: 'guide/',
-      children: [
-        'get-started/',
-        {
-          text: '功能',
-          icon: 'feature',
-          prefix: 'features/',
-          children: [
-            'syntax',
-            'emoji',
-            'search',
-            'reaction',
-            'label',
-            'i18n',
-            'pageview',
-            'comment',
-            'safety',
-            'notification',
-            'style',
-            'widget/',
-          ],
-        },
-        'database',
-        'deploy/',
-      ],
+      children: ['get-started/', 'features/', 'database', 'deploy/'],
     },
     'cookbook/',
     {
@@ -110,6 +14,7 @@ export const zhSidebarConfig = sidebar({
       icon: 'reference',
       prefix: 'reference/',
       children: [
+        'api/',
         {
           text: '客户端',
           icon: 'client',
@@ -120,7 +25,7 @@ export const zhSidebarConfig = sidebar({
           text: '服务端',
           icon: 'server',
           prefix: 'server/',
-          children: ['api', 'config', 'env'],
+          children: ['api', 'config', 'env', 'plugin'],
         },
       ],
     },
@@ -129,111 +34,25 @@ export const zhSidebarConfig = sidebar({
       icon: 'migration',
       prefix: 'migration/',
       collapsible: true,
-      children: ['client', 'valine', 'tool'],
+      children: ['v3', 'v2', 'valine', 'tool'],
     },
-    {
-      text: '高级',
-      icon: 'advanced',
-      prefix: 'advanced/',
-      collapsible: true,
-      children: ['intro', 'design', 'ecosystem', 'faq', 'contribution'],
-    },
+    'advanced/',
   ],
+
+  '/advanced/': 'structure',
+
+  '/cookbook/': 'structure',
+
+  '/guide/': 'structure',
 });
 
 export const enSidebarConfig = sidebar({
-  '/en/cookbook/': [
-    {
-      text: 'Import',
-      icon: 'import',
-      prefix: 'import/',
-      children: ['cdn', 'project'],
-    },
-    'syntax',
-    {
-      text: 'Customize',
-      icon: 'customize',
-      prefix: 'customize/',
-      children: [
-        'emoji',
-        'locale',
-        'highlighter',
-        'image-preview',
-        'search',
-        'tex-renderer',
-        'upload-image',
-      ],
-    },
-    'reactivity',
-    {
-      text: 'Compatibility',
-      icon: 'history',
-      children: ['legacy', 'emoji-compact'],
-    },
-  ],
-  '/en/guide/': [
-    {
-      text: 'Get Started',
-      icon: 'creative',
-      prefix: 'get-started/',
-      children: ['', 'client', 'server'],
-    },
-    {
-      text: 'Features',
-      icon: 'feature',
-      prefix: 'features/',
-      children: [
-        'syntax',
-        'emoji',
-        'search',
-        'reaction',
-        'label',
-        'i18n',
-        'pageview',
-        'comment',
-        'safety',
-        'notification',
-        'style',
-        'widget/',
-      ],
-    },
-    'database',
-    {
-      text: 'Deploy',
-      icon: 'deploy',
-      prefix: 'deploy/',
-      children: ['vercel', 'deta', 'railway', 'zeabur', 'netlify', 'vps'],
-    },
-  ],
   '/en/': [
     {
       text: 'Guide',
       icon: 'creative',
       prefix: 'guide/',
-      children: [
-        'get-started/',
-        {
-          text: 'Features',
-          icon: 'feature',
-          prefix: 'features/',
-          children: [
-            'syntax',
-            'emoji',
-            'search',
-            'reaction',
-            'label',
-            'i18n',
-            'pageview',
-            'comment',
-            'safety',
-            'notification',
-            'style',
-            'widget/',
-          ],
-        },
-        'database',
-        'deploy/',
-      ],
+      children: ['get-started/', 'features/', 'database', 'deploy/'],
     },
     'cookbook/',
     {
@@ -241,6 +60,7 @@ export const enSidebarConfig = sidebar({
       icon: 'reference',
       prefix: 'reference/',
       children: [
+        'api/',
         {
           text: 'Client',
           icon: 'client',
@@ -251,7 +71,7 @@ export const enSidebarConfig = sidebar({
           text: 'server',
           icon: 'server',
           prefix: 'server/',
-          children: ['api', 'config', 'env'],
+          children: ['api', 'config', 'env', 'plugin'],
         },
       ],
     },
@@ -260,14 +80,14 @@ export const enSidebarConfig = sidebar({
       icon: 'migration',
       prefix: 'migration/',
       collapsible: true,
-      children: ['client', 'valine', 'tool'],
+      children: ['v3', 'v2', 'valine', 'tool'],
     },
-    {
-      text: 'Advanced',
-      icon: 'advanced',
-      prefix: '/advanced/',
-      collapsible: true,
-      children: ['intro', 'design', 'ecosystem', 'faq', 'contribution'],
-    },
+    'advanced/',
   ],
+
+  '/en/advanced/': 'structure',
+
+  '/en/cookbook/': 'structure',
+
+  '/en/guide/': 'structure',
 });

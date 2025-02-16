@@ -1,7 +1,6 @@
 ---
 title: Component Props
 icon: config
-redirectFrom: /en/reference/component.html
 ---
 
 ## serverURL
@@ -30,7 +29,7 @@ Please ensure the uniqueness of each _article page_ path, otherwise the same com
 ## lang
 
 - Type: `string`
-- Default: `'zh-CN'`
+- Default: `navigator.language`
 - Details:
   - [Guide → I18n](../../guide/features/i18n.md#set-language)
 
@@ -48,6 +47,10 @@ Optional value:
 - `'pt-BR'`
 - `'ru'`
 - `'ru-RU'`
+- `fr-FR`
+- `fr`
+- `'es'`
+- `'es-MX'`
 
 ## locale
 
@@ -60,7 +63,7 @@ Waline Locales.
 
 ## emoji
 
-- Type: `(string | WalineEmojiInfo)[] | false`
+- Type: `(string | WalineEmojiInfo)[] | boolean`
 
   ```ts
   type WalineEmojiPresets = `http://${string}` | `https://${string}`;
@@ -174,7 +177,7 @@ number of comments per page.
 
 ## imageUploader
 
-- Type: `WalineImageUploader | false`
+- Type: `WalineImageUploader | boolean`
 
   ```ts
   type WalineImageUploader = (image: File) => Promise<string>;
@@ -191,7 +194,7 @@ The function should receive an image object and return a Promise that provides t
 
 ## highlighter
 
-- Type: `WalineHighlighter | false`
+- Type: `WalineHighlighter | boolean`
 
   ```ts
   type WalineHighlighter = (code: string, lang: string) => string;
@@ -208,10 +211,10 @@ You can pass in a code highlighter of your own, or set to `false` to disable cod
 
 ## texRenderer
 
-- Type: `WalineTexRenderer | false`
+- Type: `WalineTeXRenderer | boolean`
 
   ```ts
-  type WalineTexRenderer = (blockMode: boolean, tex: string) => string;
+  type WalineTeXRenderer = (blockMode: boolean, tex: string) => string;
   ```
 
 - Required: No
@@ -224,11 +227,11 @@ You can pass in a code highlighter of your own, or set to `false` to disable cod
 
 Customize $\TeX$ rendering, the default behavior is to prompt that the preview mode does not support $\TeX$. The function provides two parameters, the first parameter indicates whether it should be rendered in block level, and the second parameter is the string of the $\TeX$ content, and return a HTML string as render result.
 
-You can import $\TeX$ renderer to provide preview feature. We recommend you to use Katex or MathJax, or you can set to `false` to disable parsing $\TeX$.
+You can import $\TeX$ renderer to provide preview feature. We recommend you to use KaTeX or MathJax, or you can set to `false` to disable parsing $\TeX$.
 
 ## search
 
-- Type: `WalineSearchOptions | false`
+- Type: `WalineSearchOptions | boolean`
 
   ```ts
   interface WalineSearchImageData extends Record<string, unknown> {
@@ -282,15 +285,14 @@ You can import $\TeX$ renderer to provide preview feature. We recommend you to u
 
 - Required: No
 - Details:
+  Customize search features, you can disable search function by setting it to `false`.
 
-Customize search features, you can disable search function by setting it to `false`.
-
-## copyright
+## noCopyright
 
 - Type: `boolean`
-- Default: `true`
+- Default: `false`
 
-Whether show copyright and version in footer.
+Whether hide copyright and version in footer.
 
 ::: tip
 
@@ -304,6 +306,13 @@ We hope you can keep it on to support Waline.
 - Required: No
 
 reCAPTCHA V3 is a captcha service provided by Google. You can add reCAPTCHA V3 site key with `recaptchaV3Key` to enable it. Notice you should also set environment variable `RECAPTCHA_V3_SECRET` for server.
+
+## turnstileKey
+
+- Type: `string`
+- Required: No
+
+Turnstile is a captcha service provided by Cloudflare. You can add turnstile site key with `turnstileKey` to enable it. Notice you should also set environment variable `TURNSTILE_SECRET` for server.
 
 ## reaction
 

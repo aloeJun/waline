@@ -1,27 +1,21 @@
 .wl-emoji-popup {
   position: absolute;
-  top: 100%;
   inset-inline-start: 1.25em;
+  top: 100%;
   z-index: 10;
 
+  display: none;
+
+  width: 100%;
   max-width: 526px;
   border: var(--waline-border);
   border-radius: 6px;
 
-  background: var(--waline-bgcolor);
+  background: var(--waline-bg-color);
   box-shadow: var(--waline-box-shadow);
 
-  opacity: 0;
-  visibility: hidden;
-
-  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-  transform: scale(0.9, 0.9);
-  transform-origin: 0 0;
-
   &.display {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
+    display: block;
   }
 
   button {
@@ -42,7 +36,7 @@
     cursor: pointer;
 
     &:hover {
-      background: var(--waline-bgcolor-hover);
+      background: var(--waline-bg-color-hover);
     }
   }
 
@@ -64,14 +58,12 @@
     }
 
     &::-webkit-scrollbar-track-piece:vertical {
-      -webkit-border-radius: 6px;
       border-radius: 6px;
       background: rgb(0 0 0 / 10%);
     }
 
     &::-webkit-scrollbar-thumb:vertical {
       width: 6px;
-      -webkit-border-radius: 6px;
       border-radius: 6px;
       background: var(--waline-theme-color);
     }
@@ -79,11 +71,8 @@
 
   .wl-tabs {
     position: relative;
-
     overflow-x: auto;
-
     padding: 0 6px;
-
     white-space: nowrap;
 
     &::before {
@@ -106,14 +95,12 @@
     }
 
     &::-webkit-scrollbar-track-piece:horizontal {
-      -webkit-border-radius: 6px;
       border-radius: 6px;
       background: rgb(0 0 0 / 10%);
     }
 
     &::-webkit-scrollbar-thumb:horizontal {
       height: 6px;
-      -webkit-border-radius: 6px;
       border-radius: 6px;
       background: var(--waline-theme-color);
     }
@@ -132,7 +119,7 @@
       border-bottom-right-radius: 6px;
       border-bottom-left-radius: 6px;
 
-      background: var(--waline-bgcolor);
+      background: var(--waline-bg-color);
     }
   }
 }
